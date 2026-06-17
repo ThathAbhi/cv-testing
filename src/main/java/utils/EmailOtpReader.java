@@ -1,34 +1,30 @@
 package utils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class EmailOtpReader {
 
+    /**
+     * Returns the OTP for automation runs.
+     *
+     * The dev team provides a dedicated test account with a fixed OTP
+     * for automation purposes, so this reads that value from
+     * config.properties instead of polling a real mailbox.
+     *
+     * If the team later switches to a real, randomly generated OTP,
+     * replace the body of this method with real IMAP polling logic
+     * (with retries, since email delivery is not instant) - the page
+     * objects and tests do not need to change either way, since they
+     * only depend on this method returning a String.
+     */
     public String getLatestOtp() {
 
-        // Connect to mailbox using IMAP
+        String otp = ConfigReader.getProperty("test.otp");
 
-        // Read latest unread email
+        if (otp == null || otp.isBlank()) {
 
-        // Extract OTP using regex
-
-        // Example:
-
-        String emailContent =
-                "Your OTP is 845632";
-
-        Pattern pattern =
-                Pattern.compile("\\d{6}");
-
-        Matcher matcher =
-                pattern.matcher(emailContent);
-
-        if(matcher.find()){
-
-            return matcher.group();
+            throw new RuntimeException(
+                    "test.otp is not set in config.properties");
         }
 
-        return null;
+        return otp;
     }
 }

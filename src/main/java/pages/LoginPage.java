@@ -3,11 +3,10 @@ package pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
 
-public class LoginPage {
+import base.BasePage;
 
-    WebDriver driver;
+public class LoginPage extends BasePage {
 
     @FindBy(id = "email")
     WebElement emailTextbox;
@@ -17,20 +16,17 @@ public class LoginPage {
 
     public LoginPage(WebDriver driver){
 
-        this.driver = driver;
-
-        PageFactory.initElements(driver, this);
+        super(driver);
     }
 
     public void enterEmail(String email){
 
-        emailTextbox.clear();
-        emailTextbox.sendKeys(email);
+        type(emailTextbox, email);
     }
 
     public void clickContinue(){
 
-        continueButton.click();
+        click(continueButton);
     }
 
     public void requestOtp(String email){

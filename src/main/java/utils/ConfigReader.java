@@ -22,12 +22,23 @@ public class ConfigReader {
 
         } catch (IOException e) {
 
-            e.printStackTrace();
+            throw new RuntimeException(
+                    "Failed to load config.properties from src/test/resources. "
+                            + "Make sure the file exists at that path.",
+                    e);
         }
     }
 
     public static String getProperty(String key) {
 
-        return properties.getProperty(key);
+        String value = properties.getProperty(key);
+
+        if (value == null) {
+
+            throw new RuntimeException(
+                    "Missing property '" + key + "' in config.properties");
+        }
+
+        return value;
     }
 }
